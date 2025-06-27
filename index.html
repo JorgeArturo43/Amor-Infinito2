@@ -8,108 +8,38 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
       background: #fff5f8;
-      color: #333;
+      margin: 0;
+      padding: 0;
     }
-    header, footer {
-      text-align: center;
-      background-color: #f8e1e7;
+    header {
+      background: #f8e1e7;
       padding: 1em;
+      text-align: center;
     }
     nav a {
       margin: 0 1em;
       text-decoration: none;
       color: #b76e79;
+      font-weight: bold;
     }
-    .admin-login, .admin-panel {
-      max-width: 400px;
-      margin: 2em auto;
-      padding: 2em;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .admin-login h2, .admin-panel h2 {
+    main {
       text-align: center;
-      color: #b76e79;
-    }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 0.8em;
-      margin: 1em 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #b76e79;
-      color: white;
-      padding: 0.8em;
-      border: none;
-      width: 100%;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .hidden {
-      display: none;
+      padding: 2em;
     }
   </style>
 </head>
 <body>
-
-<header>
-  <h1>Amor Infinito</h1>
-  <nav>
-    <a href="#">Inicio</a>
-    <a href="#" onclick="mostrarLogin()">Admin</a>
-  </nav>
-</header>
-
-<main>
-  <section class="admin-login" id="loginPanel">
-    <h2>Acceso administrador</h2>
-    <input type="text" id="adminUser" placeholder="Usuario" />
-    <input type="password" id="adminPass" placeholder="Contraseña" />
-    <button onclick="login()">Entrar</button>
-  </section>
-
-  <section class="admin-panel hidden" id="adminPanel">
-    <h2>Panel de administración</h2>
-    <p>Bienvenido, administrador.</p>
-    <button onclick="cerrarSesion()">Cerrar sesión</button>
-    <!-- Aquí puedes insertar más funcionalidades del panel -->
-  </section>
-</main>
-
-<footer>
-  <p>&copy; 2025 Amor Infinito</p>
-</footer>
-
-<script>
-  const loginPanel = document.getElementById("loginPanel");
-  const adminPanel = document.getElementById("adminPanel");
-
-  function mostrarLogin() {
-    loginPanel.classList.remove("hidden");
-    adminPanel.classList.add("hidden");
-  }
-
-  function login() {
-    const user = document.getElementById("adminUser").value;
-    const pass = document.getElementById("adminPass").value;
-    if (user === "admin" && pass === "1234") {
-      loginPanel.classList.add("hidden");
-      adminPanel.classList.remove("hidden");
-    } else {
-      alert("Usuario o contraseña incorrectos.");
-    }
-  }
-
-  function cerrarSesion() {
-    loginPanel.classList.remove("hidden");
-    adminPanel.classList.add("hidden");
-  }
-</script>
-
+  <header>
+    <h1>Amor Infinito</h1>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Bienvenida a Amor Infinito</h2>
+    <p>Joyería elegante para mujeres modernas</p>
+  </main>
 </body>
 </html>
