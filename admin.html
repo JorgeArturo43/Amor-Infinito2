@@ -28,7 +28,7 @@
       display: block;
       margin-top: 1em;
     }
-    input, select {
+    input, select, textarea {
       width: 100%;
       padding: 0.5em;
       margin-top: 0.2em;
@@ -59,6 +59,22 @@
       display: block;
       margin-bottom: 1em;
     }
+    .share-buttons button {
+      width: auto;
+      margin: 0.2em;
+      background-color: #3b5998;
+    }
+    .whatsapp {
+      background-color: #25D366 !important;
+    }
+    .copytext {
+      background-color: #FF69B4 !important;
+    }
+    .plantilla-btn {
+      background-color: #8a2be2;
+      width: auto;
+      margin: 0.2em 0;
+    }
   </style>
 </head>
 <body>
@@ -84,6 +100,10 @@
     <label>Imagen del producto:</label>
     <input type="file" id="imagen" accept="image/*"/>
 
+    <label>Texto para redes sociales:</label>
+    <textarea id="textoRedes" rows="4" placeholder="Ej. ¡Nuevo en Amor Infinito!..."></textarea>
+    <button class="plantilla-btn" onclick="usarPlantilla()">Usar plantilla de texto</button>
+
     <button onclick="agregarProducto()">Agregar producto</button>
     <button onclick="exportarCSV()">Exportar catálogo a CSV</button>
 
@@ -93,27 +113,40 @@
 <script>
   let productos = JSON.parse(localStorage.getItem("productos")) || [];
 
+  function usarPlantilla() {
+    const nombre = document.getElementById("nombre").value;
+    const precio = document.getElementById("precio").value;
+    const categoria = document.getElementById("categoria").value;
+    let texto = `✨ ¡Nuevo en Amor Infinito! ✨\n`;
+    texto += `${nombre} 💕\n`;
+    texto += `💲${precio} | Disponible ya\n`;
+    texto += `#${categoria.charAt(0).toUpperCase() + categoria.slice(1)} #AmorInfinito #JoyeríaFemenina`;
+    document.getElementById("textoRedes").value = texto;
+  }
+
   function agregarProducto() {
     const nombre = document.getElementById("nombre").value;
     const precio = parseFloat(document.getElementById("precio").value);
     const categoria = document.getElementById("categoria").value;
     const stock = parseInt(document.getElementById("stock").value);
+    const texto = document.getElementById("textoRedes").value;
     const imagenInput = document.getElementById("imagen");
 
-    if (!nombre || isNaN(precio) || isNaN(stock) || !imagenInput.files[0]) {
+    if (!nombre || isNaN(precio) || isNaN(stock) || !imagenInput.files[0] || !texto) {
       alert("Por favor completa todos los campos.");
       return;
     }
 
     const reader = new FileReader();
     reader.onload = function (e) {
-      const producto = { nombre, precio, categoria, stock, imagen: e.target.result };
+      const producto = { nombre, precio, categoria, stock, texto, imagen: e.target.result };
       productos.push(producto);
       localStorage.setItem("productos", JSON.stringify(productos));
       mostrarProductos();
       document.getElementById("nombre").value = "";
       document.getElementById("precio").value = "";
       document.getElementById("stock").value = "";
+      document.getElementById("textoRedes").value = "";
       document.getElementById("imagen").value = "";
     };
     reader.readAsDataURL(imagenInput.files[0]);
@@ -123,6 +156,9 @@
     const contenedor = document.getElementById("listaProductos");
     contenedor.innerHTML = "";
     productos.forEach((p, i) => {
+      const texto = encodeURIComponent(p.texto);
+      const waURL = `https://wa.me/?text=${texto}`;
+      const fbURL = `https://www.facebook.com/sharer/sharer.php?u=https://jorgearturo43.github.io/Amor-Infinito2/&quote=${texto}`;
       const div = document.createElement("div");
       div.className = "product-item";
       div.innerHTML = `
@@ -131,10 +167,22 @@
         Precio: $${p.precio}<br/>
         Categoría: ${p.categoria}<br/>
         Stock: ${p.stock}<br/>
+        <textarea rows="4" onchange="actualizarTexto(${i}, this.value)">${p.texto}</textarea><br/>
+        <div class="share-buttons">
+          <button onclick="window.open('${fbURL}', '_blank')">Compartir en Facebook</button>
+          <button class="whatsapp" onclick="window.open('${waURL}', '_blank')">Enviar por WhatsApp</button>
+          <button class="copytext" onclick="copiarTexto('${texto}')">Copiar texto para Instagram</button>
+        </div>
         <button onclick="eliminarProducto(${i})">Eliminar</button>
       `;
       contenedor.appendChild(div);
     });
+  }
+
+  function actualizarTexto(index, nuevoTexto) {
+    productos[index].texto = nuevoTexto;
+    localStorage.setItem("productos", JSON.stringify(productos));
+    mostrarProductos();
   }
 
   function eliminarProducto(index) {
@@ -144,9 +192,9 @@
   }
 
   function exportarCSV() {
-    let csv = "Nombre,Precio,Categoría,Stock\n";
+    let csv = "Nombre,Precio,Categoría,Stock,Texto\n";
     productos.forEach(p => {
-      csv += `"${p.nombre}",${p.precio},"${p.categoria}",${p.stock}\n`;
+      csv += `"${p.nombre}",${p.precio},"${p.categoria}",${p.stock},"${p.texto.replace(/"/g, '""')}"\n`;
     });
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -154,6 +202,12 @@
     a.href = url;
     a.download = "catalogo_amor_infinito.csv";
     a.click();
+  }
+
+  function copiarTexto(texto) {
+    navigator.clipboard.writeText(decodeURIComponent(texto)).then(() => {
+      alert("Texto copiado para Instagram.");
+    });
   }
 
   mostrarProductos();
