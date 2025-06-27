@@ -2,105 +2,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Amor Infinito - Final</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+  <title>Amor Infinito</title>
   <style>
     body {
-      font-family: 'Playfair Display', serif;
-      background-color: #fff5f8;
-      color: #4d2c3d;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
+      background: #fff5f8;
+      color: #333;
     }
-    header {
-      background: linear-gradient(to right, #f8e1e7, #ffe4ec);
-      padding: 1em;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #b76e79;
-      font-weight: bold;
-    }
-    nav a:hover {
-      color: #ff4f88;
-    }
-    .hero {
-      text-align: center;
-      background-image: url('https://images.unsplash.com/photo-1618354691443-70c169b1c42a?auto=format&fit=crop&w=1400&q=80');
-      background-size: cover;
-      background-position: center;
-      padding: 3em 1em;
-      color: white;
-    }
-    .hero h1 {
-      font-size: 2.5em;
-      margin-bottom: 0.5em;
-    }
-    .hero p {
-      font-size: 1.2em;
-    }
-    .filters {
-      text-align: center;
-      margin: 2em auto 1em;
-    }
-    select, input[type="text"] {
-      padding: 0.5em;
-      margin: 0.5em;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1em;
-      width: 220px;
-    }
-    .products {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5em;
-      margin-bottom: 2em;
-    }
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 220px;
-      transition: transform 0.3s;
-    }
-    .product-card:hover {
-      transform: scale(1.05);
-    }
-    .product-card img {
-      width: 100%;
-      border-radius: 12px 12px 0 0;
-    }
-    .product-info {
-      padding: 1em;
-      text-align: center;
-    }
-    .product-info h3 {
-      margin: 0.3em 0;
-      color: #b76e79;
-    }
-    .product-info p {
-      margin: 0.2em 0;
-    }
-    footer {
+    header, footer {
       text-align: center;
       background-color: #f8e1e7;
       padding: 1em;
-      color: #8c4f5e;
     }
-    .social-icons a {
-      margin: 0 10px;
-      color: #b76e79;
+    nav a {
+      margin: 0 1em;
       text-decoration: none;
+      color: #b76e79;
+    }
+    .admin-login, .admin-panel {
+      max-width: 400px;
+      margin: 2em auto;
+      padding: 2em;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .admin-login h2, .admin-panel h2 {
+      text-align: center;
+      color: #b76e79;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.8em;
+      margin: 1em 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #b76e79;
+      color: white;
+      padding: 0.8em;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -109,77 +60,55 @@
 <header>
   <h1>Amor Infinito</h1>
   <nav>
-    <a href="#catalogo">Catálogo</a>
-    <a href="#contacto">Contacto</a>
-    <a href="#admin">Admin</a>
+    <a href="#">Inicio</a>
+    <a href="#" onclick="mostrarLogin()">Admin</a>
   </nav>
 </header>
 
-<section class="hero">
-  <h1>Joyas que hablan desde el corazón</h1>
-  <p>Descubre elegancia, amor propio y brillo infinito.</p>
-</section>
+<main>
+  <section class="admin-login" id="loginPanel">
+    <h2>Acceso administrador</h2>
+    <input type="text" id="adminUser" placeholder="Usuario" />
+    <input type="password" id="adminPass" placeholder="Contraseña" />
+    <button onclick="login()">Entrar</button>
+  </section>
 
-<section class="filters">
-  <select id="filtroCategoria" onchange="renderCatalogo()">
-    <option value="">Todas las categorías</option>
-  </select>
-  <input type="text" id="searchBar" placeholder="Buscar producto..." oninput="renderCatalogo()">
-</section>
-
-<section class="products" id="catalogoProductos">
-</section>
+  <section class="admin-panel hidden" id="adminPanel">
+    <h2>Panel de administración</h2>
+    <p>Bienvenido, administrador.</p>
+    <button onclick="cerrarSesion()">Cerrar sesión</button>
+    <!-- Aquí puedes insertar más funcionalidades del panel -->
+  </section>
+</main>
 
 <footer>
-  <div class="social-icons">
-    <a href="https://www.facebook.com/amorinfinitojoyeria" target="_blank">Facebook</a>
-    <a href="https://www.instagram.com/amorinfinito_joyeria" target="_blank">Instagram</a>
-  </div>
-  <p>&copy; 2025 Amor Infinito. Todos los derechos reservados.</p>
+  <p>&copy; 2025 Amor Infinito</p>
 </footer>
 
 <script>
-  let catalogo = JSON.parse(localStorage.getItem('catalogo')) || [];
+  const loginPanel = document.getElementById("loginPanel");
+  const adminPanel = document.getElementById("adminPanel");
 
-  function llenarCategorias() {
-    const categorias = [...new Set(catalogo.map(p => p.categoria))];
-    const select = document.getElementById("filtroCategoria");
-    categorias.forEach(cat => {
-      const opt = document.createElement("option");
-      opt.value = cat;
-      opt.textContent = cat;
-      select.appendChild(opt);
-    });
+  function mostrarLogin() {
+    loginPanel.classList.remove("hidden");
+    adminPanel.classList.add("hidden");
   }
 
-  function renderCatalogo() {
-    const categoriaFiltro = document.getElementById("filtroCategoria").value.toLowerCase();
-    const textoFiltro = document.getElementById("searchBar").value.toLowerCase();
-    const contenedor = document.getElementById("catalogoProductos");
-    contenedor.innerHTML = "";
-
-    catalogo.forEach((prod) => {
-      const coincideCategoria = categoriaFiltro === "" || prod.categoria.toLowerCase() === categoriaFiltro;
-      const coincideTexto = prod.nombre.toLowerCase().includes(textoFiltro);
-      if (coincideCategoria && coincideTexto) {
-        const div = document.createElement("div");
-        div.className = "product-card";
-        div.innerHTML = `
-          <img src="${prod.img}" alt="${prod.nombre}">
-          <div class="product-info">
-            <h3>${prod.nombre}</h3>
-            <p>${prod.categoria}</p>
-            <p>$${prod.precio} MXN</p>
-            <p>Stock: ${prod.stock}</p>
-          </div>
-        `;
-        contenedor.appendChild(div);
-      }
-    });
+  function login() {
+    const user = document.getElementById("adminUser").value;
+    const pass = document.getElementById("adminPass").value;
+    if (user === "admin" && pass === "1234") {
+      loginPanel.classList.add("hidden");
+      adminPanel.classList.remove("hidden");
+    } else {
+      alert("Usuario o contraseña incorrectos.");
+    }
   }
 
-  llenarCategorias();
-  renderCatalogo();
+  function cerrarSesion() {
+    loginPanel.classList.remove("hidden");
+    adminPanel.classList.add("hidden");
+  }
 </script>
 
 </body>
